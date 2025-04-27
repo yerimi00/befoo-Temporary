@@ -71,10 +71,10 @@ export interface RestaurantData {
   id: string;
   name: string;
   address: string;
-  contact: string;
+  contact?: string;
   isOfficialRecommended: boolean;
   isMyRecommended: boolean;
-  isBookmarked: boolean;
+  isBookmarked?: boolean;
 }
 
 interface RestaurantListCardProps {
