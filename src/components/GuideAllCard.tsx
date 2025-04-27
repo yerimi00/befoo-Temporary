@@ -11,6 +11,7 @@ interface GuideCardProps {
   title: string;
   description: string;
   imageUrl: string | StaticImageData;
+  onClick?: () => void; // 클릭 이벤트 핸들러 추가
 }
 
 const CardContainer = styled.div`
@@ -21,12 +22,14 @@ const CardContainer = styled.div`
   flex: 0 0 auto;
   display: inline-block;
   overflow: hidden;
+  cursor: pointer; // 클릭 가능함을 나타내는 커서 스타일 추가
 `;
 
 const BookmarkButton = styled.div`
   position: absolute;
   top: 1rem;
   right: 1rem;
+  z-index: 10; // 북마크 버튼이 상위 레이어에 표시되도록 설정
 `;
 
 const CardContent = styled.div`
@@ -63,18 +66,29 @@ export default function GuideAllCard({
   title,
   description,
   imageUrl,
+  onClick, // onClick prop 추가
 }: GuideCardProps) {
   const [isBookmarked, setIsBookmarked] = useState(false);
 
-  const toggleBookmark = () => {
+  const toggleBookmark = (e: React.MouseEvent) => {
+    e.stopPropagation(); // 이벤트 버블링 방지
     setIsBookmarked(!isBookmarked);
   };
 
   return (
-    <CardContainer>
-      <StyledImage src={imageUrl || testImg} alt={title} width={335} height={440} />
+    <CardContainer onClick={onClick}>
+      <StyledImage
+        src={imageUrl || testImg}
+        alt={title}
+        width={335}
+        height={440}
+      />
       <BookmarkButton onClick={toggleBookmark}>
-        {isBookmarked ? <FaBookmark color="white" size={30} /> : <FaRegBookmark color="white" size={30} />}
+        {isBookmarked ? (
+          <FaBookmark color="white" size={30} />
+        ) : (
+          <FaRegBookmark color="white" size={30} />
+        )}
       </BookmarkButton>
       <CardContent>
         <CardTitle>{title}</CardTitle>

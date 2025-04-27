@@ -14,7 +14,7 @@ const PageContainer = styled.div`
   flex-direction: column;
   padding: 1rem;
   width: 100%;
-  min-width: 100vw;
+  // min-width: 100vw;
   box-sizing: border-box;
 `;
 
@@ -55,9 +55,13 @@ export default function OfficialGuidePage() {
     router.back();
   };
 
+  // 가이드 카드 클릭 시 해당 가이드 상세 페이지로 이동하는 함수
+  const handleGuideClick = (guideId: string) => {
+    router.push(`/guide/official/${guideId}`);
+  };
+
   const [regionFilter, setRegionFilter] = React.useState<string | null>(null);
   const [healthFilter, setHealthFilter] = React.useState<string | null>(null);
-
 
   const officialGuides = [
     {
@@ -85,19 +89,23 @@ export default function OfficialGuidePage() {
       <PrevPage text="둘러보기" onClick={handlePrevPageClick} />
       <Title>공식 가이드 모아보기</Title>
       <ChipContainer>
-  <Chip
-    selected={regionFilter === "서울"}
-    onClick={() => setRegionFilter(regionFilter === "서울" ? null : "서울")}
-  >
-    지역 선택
-  </Chip>
-  <Chip
-    selected={healthFilter === "운동"}
-    onClick={() => setHealthFilter(healthFilter === "운동" ? null : "운동")}
-  >
-    건강 필터
-  </Chip>
-</ChipContainer>
+        <Chip
+          selected={regionFilter === "서울"}
+          onClick={() =>
+            setRegionFilter(regionFilter === "서울" ? null : "서울")
+          }
+        >
+          지역 선택
+        </Chip>
+        <Chip
+          selected={healthFilter === "운동"}
+          onClick={() =>
+            setHealthFilter(healthFilter === "운동" ? null : "운동")
+          }
+        >
+          건강 필터
+        </Chip>
+      </ChipContainer>
       <GuideGrid>
         {officialGuides.map((guide) => (
           <GuideAllCard
@@ -105,6 +113,7 @@ export default function OfficialGuidePage() {
             title={guide.title}
             description={guide.description}
             imageUrl={guide.imageUrl}
+            onClick={() => handleGuideClick(guide.id)} // 클릭 이벤트 추가
           />
         ))}
       </GuideGrid>
