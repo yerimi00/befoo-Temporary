@@ -17,6 +17,7 @@ const HeaderBar = styled.div`
   background-color: #f8f9fa;
   border-bottom: 1px solid #dee2e6;
 `;
+
 export default function Home() {
   const officialGuides = [
     {
@@ -56,15 +57,12 @@ export default function Home() {
 
   return (
     <div>
-      {/* 홈 페이지
-      <Chip text="하이" /> */}
       <HeaderBar>
         <Image src={logoImg} alt="logo" width={50} />
-        <SearchBar />
+        <SearchBar /> {/* 초기값 필요 없음 */}
       </HeaderBar>
 
       <GuideSection guidePart="공식 가이드" guides={officialGuides} />
-
       <GuideSection guidePart="사용자 가이드" guides={userGuides} />
     </div>
   );

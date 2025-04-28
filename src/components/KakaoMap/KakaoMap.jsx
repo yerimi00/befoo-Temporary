@@ -5,11 +5,11 @@ import styled from "styled-components";
 const MapContainer = styled.div`
   width: 100%;
   height: 100%;
-  min-height: 400px; // 최소 높이 보장
-  min-width: 100vh; // 최소 너비 보장
-  border: none; // 테두리 제거
-  position: relative; // 상대 위치 설정
-  flex: 1; // 남은 공간 모두 차지
+  min-height: 400px;
+  min-width: 100vh;
+  border: none;
+  position: relative;
+  flex: 1;
 `;
 
 const ErrorMessage = styled.div`
@@ -44,13 +44,16 @@ function KakaoMap() {
   const mapInstanceRef = useRef(null);
 
   useEffect(() => {
+    // API 키 정의 - 환경변수 없을 경우 하드코딩된 값 사용
     const API_KEY = process.env.NEXT_PUBLIC_KAKAO_MAP_API_KEY;
 
     console.log("API Key 사용:", API_KEY);
 
+    // 스크립트 로드 상태 확인 플래그
     let isScriptLoaded = false;
     let isScriptLoading = false;
 
+    // 샘플 위치 데이터
     const sampleLocations = [
       {
         position: { lat: 37.5665, lng: 126.978 },
@@ -74,8 +77,10 @@ function KakaoMap() {
       },
     ];
 
+    // 스크립트 로드 함수
     const loadScript = () => {
       return new Promise((resolve, reject) => {
+        // 이미 로드 중이거나 로드된 경우 중복 방지
         if (isScriptLoading) {
           console.log("이미 스크립트 로딩 중...");
           return;
@@ -89,6 +94,7 @@ function KakaoMap() {
 
         isScriptLoading = true;
 
+        // 이미 script 태그가 존재하는지 확인
         const existingScript = document.querySelector(
           `script[src*="dapi.kakao.com/v2/maps/sdk.js"]`
         );
@@ -123,9 +129,11 @@ function KakaoMap() {
       });
     };
 
+    // 지도 초기화 함수
     const initializeMap = () => {
       return new Promise((resolve, reject) => {
         try {
+          // DOM 엘리먼트 체크 - ref를 사용하여 접근
           const container = mapContainerRef.current;
           if (!container) {
             throw new Error("Map container를 찾을 수 없습니다");
@@ -139,6 +147,7 @@ function KakaoMap() {
             container.offsetHeight
           );
 
+          // 컨테이너 크기가 0이면 경고
           if (container.offsetWidth === 0 || container.offsetHeight === 0) {
             console.warn(
               "경고: 맵 컨테이너의 크기가 0입니다. 지도가 표시되지 않을 수 있습니다."
